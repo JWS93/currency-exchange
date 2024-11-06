@@ -36,12 +36,15 @@ export default function Calculator() {
         <div className="col-xs-10 col-md-1 mx-1 my-md-4 py-1 ps-md-5">
           <FontAwesomeIcon icon={faMoneyBillTransfer} />
         </div>
+        <div className="col-xs-10 col-md-3 mx-1 my-4">
+          <button className="btn btn-primary btn-sm rounded px-3 me-3">Flip Conversion</button>
+        </div>
       </div>
       <div className="row ps-1">
         <div className="col-xs-12 col-md-3 mt-2">
           <p>Converted Currency Amount: <br /> Value</p>
         </div>
-        <div className="col-xs-12 col-md-6 mt-2">
+        <div className="col-xs-12 col-md-6 mt-2 mb-5">
         <Select
           className="basic-single"
           styles={{
