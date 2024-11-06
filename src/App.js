@@ -1,6 +1,12 @@
-import { routes, route, link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
-import Calculator from './Calculator';
-import ExchangeTable from './ExchangeTable';
+import Navbar from './Navbar';
+import Footer from './Footer'
+import './App.css'
 
+export default function App() {
+  return(
+    <div>
+      <Navbar />
+      <Footer />
+    </div>
+  )
+}
