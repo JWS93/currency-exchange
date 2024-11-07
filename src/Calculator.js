@@ -22,9 +22,6 @@ export default function Calculator({options}) {
     setBaseCurrencyValue(Number(event.target.value));
   };
 
-  const handleConvertedValueChange = (event) => {
-    setConvertedCurrencyValue(Number(event.target.value));
-  };
 
   const convert = (to, from, amount) => {
     fetch(`https://api.frankfurter.app/latest?base=${from}&symbols=${to}`)
