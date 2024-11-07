@@ -1,5 +1,6 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Routes, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import Calculator from './Calculator';
@@ -7,6 +8,23 @@ import ExchangeTable from './ExchangeTable';
 import './Navbar.css';
 
 function Navigation() {
+  const [options, setOptions] = useState('');
+  
+  fetch('https://api.frankfurter.app/currencies').then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Request was either a 404 or 500');
+  }).then((data) => {
+    let optionItems = Object.entries(data).map(([key, value]) => ({ ['value']: key, ['label']: value }));
+    setOptions(optionItems);
+  }).catch((error) => {
+    console.log(error);
+  });
+
+
+
+
   return (
     <>
       <Navbar expand="md" className="bg-body-tertiary">
@@ -24,8 +42,8 @@ function Navigation() {
         </Container>
       </Navbar>
       <Routes>
-        <Route path="/" element={<Calculator />}></Route>
-        <Route path="/exchangetable" element={<ExchangeTable />}></Route>
+        <Route path="/" element={<Calculator options={options} />}></Route>
+        <Route path="/exchangetable" element={<ExchangeTable options={options} />}></Route>
       </Routes>
     </>
   );
