@@ -28,31 +28,30 @@ export default function ExchangeTable({options}) {
     convert(base);
   }
 
-  function CurrencyList({convertedCurrencies}) {
+  function CurrencyList({convertedCurrencies, baseCurrencyType}) {
+    const baseCurrency = (baseCurrencyType.value)
     return (
-      <ul className="list-group col-6 ps-2">
-        <li className="list-group-item"><h5>Currency</h5></li>
-        {Object.keys(convertedCurrencies).map((key) => (
-          <li key={key} className="list-group-item">
-            {key}
-          </li>
-        ))}
-      </ul>
+      <div className="row my-3">
+        <ul className="list-group col-6 ps-2">
+          <li className="list-group-item"><h5>Currency: {baseCurrency}</h5></li>
+          {Object.keys(convertedCurrencies).map((key) => (
+            <li key={key} className="list-group-item">
+              {key}
+            </li>
+          ))}
+        </ul>
+        <ul className="list-group col-6">
+          <li className="list-group-item"><h5>Value: 1.00</h5></li>
+          {Object.keys(convertedCurrencies).map((key) => (
+            <li key={key} className="list-group-item">
+            {convertedCurrencies[key]}
+            </li>
+          ))}
+        </ul>
+      </div>
     )
   }
 
-  function ValueList({convertedCurrencies}) {
-    return (
-      <ul className="list-group col-6">
-        <li className="list-group-item"><h5>Value</h5></li>
-        {Object.keys(convertedCurrencies).map((key) => (
-          <li key={key} className="list-group-item">
-            {convertedCurrencies[key]}
-          </li>
-        ))}
-      </ul>
-    )
-  }
 
 
 
@@ -80,10 +79,7 @@ export default function ExchangeTable({options}) {
           <button className="btn btn-primary btn-sm rounded" onClick={handleClick}>Convert</button>
         </div>
       </div>
-      <div className="row my-3">
-        <CurrencyList convertedCurrencies={convertedCurrencies} />
-        <ValueList convertedCurrencies={convertedCurrencies}/>
-      </div>
+      <CurrencyList convertedCurrencies={convertedCurrencies} baseCurrencyType={baseCurrencyType} />
     </div>
   )
 }

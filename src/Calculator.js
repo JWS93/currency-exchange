@@ -39,17 +39,14 @@ export default function Calculator({options}) {
     const from = (baseCurrencyType.value);
     const to = (convertedCurrencyType.value);
     const amount = baseCurrencyValue;
-    convert(from, to, amount);
+    convert(to, from, amount);
   };
 
   const handleFlip = () => {
     setBaseCurrencyType(convertedCurrencyType);
     setConvertedCurrencyType(baseCurrencyType);
     setBaseCurrencyValue(convertedCurrencyValue);
-    const from = (baseCurrencyType.value);
-    const to = (convertedCurrencyType.value);
-    const amount = baseCurrencyValue;
-    convert(from, to, amount);
+    setConvertedCurrencyValue(baseCurrencyValue);
   };
 
   return (

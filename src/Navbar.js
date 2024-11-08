@@ -29,8 +29,11 @@ function Navigation() {
     <>
       <Navbar expand="md" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand className="justify-content-start">
-            <FontAwesomeIcon icon={faMoneyBillTransfer} className="logo" />
+          <Navbar.Brand>
+            <Container className="d-flex flex-nowrap align-items-center">
+            <FontAwesomeIcon icon={faMoneyBillTransfer} className="logo pe-3" />
+            <h5 className="pt-1">Crumb Currency</h5>
+            </Container>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
