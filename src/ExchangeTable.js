@@ -5,6 +5,7 @@ import './ExchangeTable.css';
 export default function ExchangeTable({options}) {
   const [baseCurrencyType, setBaseCurrencyType] = useState('');
   const [convertedCurrencies, setConvertedCurrencies] = useState('');
+  const [displayBaseCurrency, setDisplayBaseCurrency] = useState('');
 
   const baseCurrencyChange = (baseCurrencyType) => {
     setBaseCurrencyType(baseCurrencyType);
@@ -26,6 +27,7 @@ export default function ExchangeTable({options}) {
   const handleClick = () => {
     const base = (baseCurrencyType.value);
     convert(base);
+    setDisplayBaseCurrency(base);
   }
 
   function CurrencyList({convertedCurrencies, baseCurrencyType}) {
@@ -33,7 +35,7 @@ export default function ExchangeTable({options}) {
     return (
       <div className="row my-3">
         <ul className="list-group col-6 ps-2">
-          <li className="list-group-item"><h5>Currency: {baseCurrency}</h5></li>
+          <li className="list-group-item"><h5>Currency: {displayBaseCurrency}</h5></li>
           {Object.keys(convertedCurrencies).map((key) => (
             <li key={key} className="list-group-item">
               {key}
@@ -68,7 +70,6 @@ export default function ExchangeTable({options}) {
                 borderColor: "rgb(13, 110, 253)",
               }),
             }}
-            isClearable
             placeholder="Select Base Currency"
             value={baseCurrencyType}
             onChange={baseCurrencyChange}

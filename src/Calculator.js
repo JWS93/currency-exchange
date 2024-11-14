@@ -77,7 +77,6 @@ export default function Calculator({options}) {
               borderColor: "rgb(13, 110, 253)",
             }),
           }}
-          isClearable
           placeholder="Select Base Currency"
           value={baseCurrencyType}
           onChange={baseCurrencyChange}
@@ -116,7 +115,6 @@ export default function Calculator({options}) {
               borderColor: "rgb(13, 110, 253)",
             }),
           }}
-          isClearable
           placeholder="Select Conversion Currency"
           value={convertedCurrencyType}
           onChange={convertCurrencyChange}
