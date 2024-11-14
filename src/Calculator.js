@@ -3,16 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import './Calculator.css';
-import { Line } from "react-chartjs-2";
 
 export default function Calculator({options}) {
   const [baseCurrencyType, setBaseCurrencyType] = useState('');
   const [baseCurrencyValue, setBaseCurrencyValue] = useState('');
   const [convertedCurrencyType, setConvertedCurrencyType] = useState('');
   const [convertedCurrencyValue, setConvertedCurrencyValue] = useState('');
-  const [chartLabels, setChartLabels] = useState('');
-  const [chartData, setChartData] = useState('');
-  const [chartLabel, setChartLabel] = useState('');
 
   const baseCurrencyChange = (baseCurrencyType) => {
     setBaseCurrencyType(baseCurrencyType);
@@ -24,7 +20,6 @@ export default function Calculator({options}) {
 
   const handleBaseValueChange = (event) => {
     let newValue = event.target.value;
-
     if (newValue !== '0') {
       newValue = newValue.replace(/^0+/, '');
     }
@@ -58,21 +53,6 @@ export default function Calculator({options}) {
     setBaseCurrencyValue(convertedCurrencyValue);
     setConvertedCurrencyValue(baseCurrencyValue);
   };
-
-  const Chart = ({baseCurrencyType, convertedCurrencyType, setChartLabels, setChartData, setChartLabel}) => {
-    const base = (baseCurrencyType.value);
-    const quote = (convertedCurrencyType.value);
-    const endDate = new Date().toISOString().split('T')[0];
-    const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
-    fetch(`https://api.frankfurter.app/${startDate}..${endDate}?from=${base}&to=${quote}`)
-    .then((response) => response.json())
-    .then((data) => {
-      setChartLabels(Object.keys(data.rates));
-      setChartData(Object.values(data.rates).map(rate => rate[quote]));
-      const chartLabelChange = `${base}/${quote}`;
-      setChartLabel(chartLabelChange);
-    })
-  }
   
 
   return (
@@ -143,8 +123,6 @@ export default function Calculator({options}) {
           options={options}
         />
         </div>
-      </div>
-      <div className="row my-2">
       </div>
     </div>
   )
