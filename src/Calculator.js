@@ -1,14 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import './Calculator.css';
+import { Line } from 'react-chartjs-2'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Legend);
 
 export default function Calculator({options}) {
   const [baseCurrencyType, setBaseCurrencyType] = useState('');
   const [baseCurrencyValue, setBaseCurrencyValue] = useState('');
   const [convertedCurrencyType, setConvertedCurrencyType] = useState('');
   const [convertedCurrencyValue, setConvertedCurrencyValue] = useState('');
+  const [render, setRender] = useState(false);
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: '',
+        data: [],
+        fill: false,
+        tension: 0,
+      }
+    ]
+  });
+  const [dateData, setDateData] = useState([]);
+  const [rateData, setRateData] = useState([]);
+
 
   const baseCurrencyChange = (baseCurrencyType) => {
     setBaseCurrencyType(baseCurrencyType);
@@ -40,12 +59,15 @@ export default function Calculator({options}) {
     });
   };
 
+
   const handleClick = () => {
     const from = (baseCurrencyType.value);
     const to = (convertedCurrencyType.value);
     const amount = baseCurrencyValue;
     convert(to, from, amount);
+    setRender(true);
   };
+
 
   const handleFlip = () => {
     setBaseCurrencyType(convertedCurrencyType);
@@ -53,7 +75,60 @@ export default function Calculator({options}) {
     setBaseCurrencyValue(convertedCurrencyValue);
     setConvertedCurrencyValue(baseCurrencyValue);
   };
-  
+
+
+  useEffect(() => {
+    if(baseCurrencyType && convertedCurrencyType !== '') {
+      const endDate = new Date().toISOString().split('T')[0];
+      const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+      const quote = convertedCurrencyType.value
+      const base = baseCurrencyType.value
+      fetch(`https://api.frankfurter.app/${startDate}..${endDate}?from=${base}&to=${quote}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        let dates = Object.keys(data.rates);
+        let rates = Object.values(data.rates).map(rate => rate[quote]);
+        setDateData(dates);
+        setRateData(rates);
+        setChartData({
+          ...chartData,
+          labels: dateData,
+          datasets: [
+            {
+              label: `${base}/${quote}`,
+              data: rateData,
+              fill: false,
+              tension: 0,
+              borderColor: 'rgb(13, 110, 253)',
+            }
+          ]
+        });
+      })
+      .catch(error => console.error(error.message));
+    }
+  }, [handleClick]);
+
+  function Chart({render, chartData}) {
+    const options = {
+        animation: false,
+        title: {
+          display: true,
+          font: {
+            size: 16,
+            weight: 'bold',
+          },
+        },
+      }
+    if(render === true) {
+      return(
+        <Line data={chartData} options={options} className="mt-3"/>
+      )
+    }
+  }
+
 
   return (
     <div className="container-fluid">
@@ -102,7 +177,7 @@ export default function Calculator({options}) {
             className="border border-primary rounded"
             type="number"
             value={convertedCurrencyValue}
-            readonly
+            readOnly
           />
         </div>
         <div className="col-xs-12 col-md-6 mt-3 mb-5">
@@ -120,6 +195,11 @@ export default function Calculator({options}) {
           onChange={convertCurrencyChange}
           options={options}
         />
+        </div>
+      </div>
+      <div className="row px-2 my-3">
+        <div className="col-md-9 col-xs-12 mb-5">
+          <Chart render={render} chartData={chartData} />
         </div>
       </div>
     </div>

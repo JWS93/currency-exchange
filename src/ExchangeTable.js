@@ -31,7 +31,6 @@ export default function ExchangeTable({options}) {
   }
 
   function CurrencyList({convertedCurrencies, baseCurrencyType}) {
-    const baseCurrency = (baseCurrencyType.value)
     return (
       <div className="row my-3">
         <ul className="list-group col-6 ps-2">
