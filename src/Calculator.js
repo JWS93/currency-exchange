@@ -199,7 +199,7 @@ export default function Calculator({options}) {
       </div>
       <div className="row px-2 my-3">
         <div className="col-md-9 col-xs-12 mb-5">
-          <Chart render={render} chartData={chartData} />
+          <Chart render={render} chartData={chartData} className="mb-5"/>
         </div>
       </div>
     </div>
